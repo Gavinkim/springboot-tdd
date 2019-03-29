@@ -46,6 +46,12 @@ public class SampleControllerTest {
         assertThat(response.getBody(), containsString("welcome"));
     }
 
+    @Test
+    public void sampleWithParameter() throws Exception {
+        ResponseEntity<String> response = template.getForEntity(createUrl("/sample-with-parameter/gavin"),String.class);
+        assertThat(response.getBody(),containsString("welcome, gavin!"));
+    }
+
     private String createUrl(String url) {
         return String.format("%s:%s%s",LOCAL_HOST, port, url);
     }

@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SampleApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SampleControllerIntegrationTest {
+public class SampleControllerTest {
 
     private static final String LOCAL_HOST = "http://localhost";
 

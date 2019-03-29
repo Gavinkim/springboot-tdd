@@ -4,6 +4,7 @@ import com.honghap.sample.SampleApplication;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -25,7 +26,8 @@ public class SampleControllerTest {
     @LocalServerPort
     private int port;
 
-    private TestRestTemplate template = new TestRestTemplate();
+    @Autowired
+    private TestRestTemplate template;
 
     @Test
     public void sample() {

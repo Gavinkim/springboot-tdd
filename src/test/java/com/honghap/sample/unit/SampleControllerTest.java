@@ -42,4 +42,13 @@ public class SampleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("welcome")));
     }
+
+    @Test
+    public void sampleWithParameter() throws Exception {
+        mvc.perform(
+                MockMvcRequestBuilders.get("/sample-with-parameter/gavin")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("welcome, gavin!")));
+    }
 }

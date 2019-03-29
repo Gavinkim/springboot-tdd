@@ -10,6 +10,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -32,6 +33,15 @@ public class SampleControllerTest {
         ResponseEntity<String> response = template.getForEntity(createUrl("/sample"),String.class);
 
         assertThat(response.getBody(), Matchers.equalTo("welcome"));
+    }
+
+
+    @Test
+    public void getSampleDto() throws Exception{
+
+        ResponseEntity<String> response = template.getForEntity(createUrl("/sample/dto"),String.class);
+
+        assertThat(response.getBody(), containsString("welcome"));
     }
 
     private String createUrl(String url) {

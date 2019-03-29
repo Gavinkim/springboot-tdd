@@ -24,4 +24,10 @@ public class TodoController {
     public List<Todo> retriveTodos(@PathVariable String name){
         return todoService.retrieveTodos(name);
     }
+
+    @GetMapping("/users/{name}/todos/{id}")
+    public Todo retriveTodo(@PathVariable String name, @PathVariable int id) {
+        return todoService.retrieveTodo(name, id);
+    }
+
 }

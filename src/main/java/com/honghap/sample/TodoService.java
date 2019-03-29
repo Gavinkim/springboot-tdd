@@ -35,7 +35,8 @@ public class TodoService {
     }
 
 
-    public Todo retrieveTodo(int id){
-        return todos.stream().filter(t->t.getId()==id).findFirst().orElse(Todo.builder().id(id).build());
+    public Todo retrieveTodo(String user, int id){
+        return todos.stream()
+                .filter(todo -> id==todo.getId() && user.equalsIgnoreCase(todo.getUser())).findFirst().orElse(Todo.builder().id(id).build());
     }
 }

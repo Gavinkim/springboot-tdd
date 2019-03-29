@@ -14,7 +14,7 @@ public class SampleController {
         return "welcome";
     }
 
-    @GetMapping("/sample/message")
+    @GetMapping("/sample/dto")
     public SampleDTO getSampleDto(){
         return SampleDTO.builder().message("welcome").build();
     }

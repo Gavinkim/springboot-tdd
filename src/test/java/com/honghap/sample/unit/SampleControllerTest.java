@@ -1,5 +1,6 @@
-package com.honghap.sample;
+package com.honghap.sample.unit;
 
+import com.honghap.sample.SampleController;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;

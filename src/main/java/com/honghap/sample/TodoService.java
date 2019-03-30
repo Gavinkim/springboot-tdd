@@ -14,13 +14,12 @@ import java.util.stream.Collectors;
 public class TodoService {
 
     private static List<Todo> todos = new ArrayList<>();
-    private static int todoCount = 4;
     private static LocalDate NOW = LocalDate.now();
+    private static int todoCount = 3;
     static {
         todos.add(Todo.builder().id(1).desc("Study spring batch").isDone(false).targetDate(NOW.plusDays(1)).user("Gavin").build());
         todos.add(Todo.builder().id(2).desc("Study Aparch Spark").isDone(false).targetDate(NOW.plusDays(2)).user("Gavin").build());
-        todos.add(Todo.builder().id(3).desc("Study ElasticSearch").isDone(false).targetDate(NOW.plusDays(1)).user("James").build());
-        todos.add(Todo.builder().id(4).desc("Study Django").isDone(false).targetDate(NOW.plusDays(3)).user("James").build());
+        todos.add(Todo.builder().id(3).desc("Study ElasticSearch").isDone(false).targetDate(NOW.plusDays(1)).user("Gavin").build());
     }
 
 
@@ -29,14 +28,19 @@ public class TodoService {
     }
 
     public Todo addTodo(Todo todo){
-        todo.setId(todoCount++);
-        todos.add(todo);
-        return todo;
+        Todo createTodo = Todo.builder()
+                .id(todos.size()+1)
+                .user(todo.getUser())
+                .targetDate(todo.getTargetDate())
+                .isDone(todo.isDone())
+                .desc(todo.getDesc())
+                .build();
+        todos.add(createTodo);
+        return createTodo;
     }
 
 
     public Todo retrieveTodo(String user, int id){
-        return todos.stream()
-                .filter(todo -> id==todo.getId() && user.equalsIgnoreCase(todo.getUser())).findFirst().orElse(Todo.builder().id(id).build());
+        return todos.stream().filter(todo -> todo.getUser().equalsIgnoreCase(user) && todo.getId()==id ).findFirst().orElseGet(Todo::new);
     }
 }

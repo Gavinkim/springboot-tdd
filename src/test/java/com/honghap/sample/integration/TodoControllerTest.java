@@ -1,7 +1,6 @@
 package com.honghap.sample.integration;
 
 import com.honghap.sample.Application;
-import com.honghap.sample.Todo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -11,10 +10,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by gavinkim at 2019-03-29
@@ -47,6 +42,13 @@ public class TodoControllerTest {
                 "desc: \"Study Aparch Spark\",\n" +
                 "targetDate: \"2019-04-01\",\n" +
                 "done: false\n" +
+                "},\n" +
+                "{\n" +
+                "id: 3,\n" +
+                "user: \"Gavin\",\n" +
+                "desc: \"Study ElasticSearch\",\n" +
+                "targetDate: \"2019-03-31\",\n" +
+                "done: false\n" +
                 "}\n" +
                 "]";
 
@@ -61,13 +63,13 @@ public class TodoControllerTest {
      @Test
     public void retrieveTodoFindByNameAndId() throws Exception {
         String expected = "{\n" +
-                "id: 4,\n" +
-                "user: \"James\",\n" +
-                "desc: \"Study Django\",\n" +
-                "targetDate: \"2019-04-02\",\n" +
+                "id: 2,\n" +
+                "user: \"Gavin\",\n" +
+                "desc: \"Study Aparch Spark\",\n" +
+                "targetDate: \"2019-04-01\",\n" +
                 "done: false\n" +
                 "}";
-        ResponseEntity<String> response = template.getForEntity(createUrl("/users/james/todos/4"),String.class);
+        ResponseEntity<String> response = template.getForEntity(createUrl("/users/gavin/todos/2"),String.class);
         JSONAssert.assertEquals(expected,response.getBody(),false);
     }
 

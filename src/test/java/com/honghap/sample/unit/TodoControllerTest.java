@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,7 +38,7 @@ public class TodoControllerTest {
     private TodoService todoService;
 
     @Test
-    public void retrieveTodos() throws Exception {
+    public void retrieveTodosFindByName() throws Exception {
         List<Todo> mockList = Arrays.asList(
                 Todo.builder().id(1).user("gavin").desc("learn spring").isDone(false).targetDate(LocalDate.of(2019,03,29)).build(),
                 Todo.builder().id(2).user("gavin").desc("learn batch").isDone(false).targetDate(LocalDate.of(2019,03,30)).build()
@@ -65,6 +66,25 @@ public class TodoControllerTest {
                 "done: false\n" +
                 "}\n" +
                 "]";
+        JSONAssert.assertEquals(expected,result.getResponse().getContentAsString(),false);
+    }
+    @Test
+    public void retriveTodoByNameAndId() throws Exception{
+        Todo mockTodo = Todo.builder().id(1).user("gavin").desc("gavin spring").isDone(false).targetDate(LocalDate.of(2019,03,29)).build();
+
+        when(todoService.retrieveTodo(anyString(),anyInt()) ).thenReturn(mockTodo);
+
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.get("/users/gavin/todos/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+        String expected = "{\n" +
+                "id: 1,\n" +
+                "user: \"gavin\",\n" +
+                "desc: \"gavin spring\",\n" +
+                "targetDate: \"2019-03-29\",\n" +
+                "done: false\n" +
+                "}";
         JSONAssert.assertEquals(expected,result.getResponse().getContentAsString(),false);
     }
 }

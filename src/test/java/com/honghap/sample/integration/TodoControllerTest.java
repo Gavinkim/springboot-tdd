@@ -32,7 +32,7 @@ public class TodoControllerTest {
     private TestRestTemplate template;
 
     @Test
-    public void retriveTodos() throws Exception {
+    public void retrieveTodos() throws Exception {
         String expected = "[\n" +
                 "{\n" +
                 "id: 1,\n" +

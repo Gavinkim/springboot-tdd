@@ -27,20 +27,20 @@ public class TodoService {
         return todos.stream().filter(t->t.getUser().equalsIgnoreCase(user)).collect(Collectors.toList());
     }
 
-    public Todo addTodo(Todo todo){
+    public Todo addTodo(String name, String desc, LocalDate targetDate, boolean isDone){
         Todo createTodo = Todo.builder()
                 .id(todos.size()+1)
-                .user(todo.getUser())
-                .targetDate(todo.getTargetDate())
-                .isDone(todo.isDone())
-                .desc(todo.getDesc())
+                .user(name)
+                .targetDate(targetDate)
+                .isDone(isDone)
+                .desc(desc)
                 .build();
         todos.add(createTodo);
         return createTodo;
     }
 
 
-    public Todo retrieveTodo(String user, int id){
-        return todos.stream().filter(todo -> todo.getUser().equalsIgnoreCase(user) && todo.getId()==id ).findFirst().orElseGet(Todo::new);
+    public Todo retrieveTodo(String user, int id) throws TodoNotFoundException{
+        return todos.stream().filter(todo -> todo.getUser().equalsIgnoreCase(user) && todo.getId()==id ).findFirst().orElse(null);
     }
 }

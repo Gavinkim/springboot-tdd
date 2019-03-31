@@ -3,6 +3,7 @@ package com.honghap.sample.unit;
 import com.honghap.sample.Todo;
 import com.honghap.sample.TodoController;
 import com.honghap.sample.TodoService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -19,9 +20,10 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -87,4 +89,26 @@ public class TodoControllerTest {
                 "}";
         JSONAssert.assertEquals(expected,result.getResponse().getContentAsString(),false);
     }
+
+    //fixme: requestbody 값을 넘겨주는 부분에 대한 테스트 필요.
+    @Test
+    @Ignore
+    public void createTodo() throws Exception {
+        Todo mockTodo = Todo.builder().user("Gavin").desc("study hive").isDone(false).targetDate(LocalDate.of(2019,04,02)).build();
+        String todo = "{\n" +
+                "id: 4,\n" +
+                "user: \"Gavin\",\n" +
+                "desc: \"study hive\",\n" +
+                "targetDate: \"2019-04-02\",\n" +
+                "done: false\n" +
+                "}";
+        when(todoService.addTodo(anyString(),anyString(),isNull(),anyBoolean())).thenReturn(mockTodo);
+        mvc.perform(MockMvcRequestBuilders.post("/users/gavin/todos")
+                .content(todo)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location",containsString("/users/gavin/todos/4")));
+    }
+
+
 }

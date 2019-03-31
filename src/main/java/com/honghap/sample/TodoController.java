@@ -6,7 +6,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.xml.ws.Response;
 import java.net.URI;
 import java.util.List;
 
@@ -30,12 +29,16 @@ public class TodoController {
 
     @GetMapping("/users/{name}/todos/{id}")
     public Todo retrieveTodo(@PathVariable String name, @PathVariable int id) {
-        return todoService.retrieveTodo(name, id);
+        Todo todo = todoService.retrieveTodo(name,id);
+        if(ObjectUtils.isEmpty(todo)) {
+            throw new TodoNotFoundException("Todo Not Found");
+        }
+        return todo;
     }
 
     @PostMapping("/users/{name}/todos")
-    ResponseEntity<?> add(@RequestBody Todo todo) {
-        Todo createdTodo = todoService.addTodo(todo );
+    ResponseEntity<?> add(@PathVariable String name,@RequestBody Todo todo) {
+        Todo createdTodo = todoService.addTodo(name,todo.getDesc(), todo.getTargetDate(), todo.isDone());
         if (ObjectUtils.isEmpty(createdTodo)) {
             return ResponseEntity.noContent().build();
         }
@@ -45,5 +48,9 @@ public class TodoController {
         return ResponseEntity.created(location).build();
     }
 
+    @GetMapping(path = "/users/dummy-service")
+    public Todo errorService() {
+        throw new RuntimeException("Some exception occured");
+    }
 
 }

@@ -1,13 +1,16 @@
 package com.honghap.sample.todo;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import org.springframework.hateoas.Resource;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -18,6 +21,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
  * Created by gavinkim at 2019-03-30
  */
 @RestController
+@Api(value = "Todo",description = "Todo Controller")
 public class TodoController {
 
     private final TodoService todoService;
@@ -27,6 +31,12 @@ public class TodoController {
         this.todoService = todoService;
     }
 
+    @ApiOperation(
+            value = "이름으로 유저의 모든 todos 검색",
+            notes = "일치하는 todos 리스트 반환. 현재 페이징 미지원",
+            response = Todo.class,
+            produces = "application/json"
+    )
     @GetMapping("/users/{name}/todos")
     public List<Todo> retrieveTodos(@PathVariable String name){
         return todoService.retrieveTodos(name);
@@ -46,7 +56,7 @@ public class TodoController {
     }
 
     @PostMapping("/users/{name}/todos")
-    ResponseEntity<?> add(@PathVariable String name,@RequestBody Todo todo) {
+    ResponseEntity<?> add(@PathVariable String name,@Valid  @RequestBody Todo todo) {
         Todo createdTodo = todoService.addTodo(name,todo.getDesc(), todo.getTargetDate(), todo.isDone());
         if (ObjectUtils.isEmpty(createdTodo)) {
             return ResponseEntity.noContent().build();

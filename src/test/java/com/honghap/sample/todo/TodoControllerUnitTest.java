@@ -36,11 +36,13 @@ public class TodoControllerUnitTest {
     @MockBean
     private TodoService todoService;
 
+    private static LocalDate now = LocalDate.now();
+
     @Test
     public void retrieveTodosFindByName() throws Exception {
         List<Todo> mockList = Arrays.asList(
-                Todo.builder().id(1).user("gavin").desc("learn spring").isDone(false).targetDate(LocalDate.of(2019,03,29)).build(),
-                Todo.builder().id(2).user("gavin").desc("learn batch").isDone(false).targetDate(LocalDate.of(2019,03,30)).build()
+                Todo.builder().id(1).user("gavin").desc("learn spring").isDone(false).targetDate(now).build(),
+                Todo.builder().id(2).user("gavin").desc("learn batch").isDone(false).targetDate(now).build()
         );
 
         when(todoService.retrieveTodos(anyString())).thenReturn(mockList);
@@ -54,14 +56,14 @@ public class TodoControllerUnitTest {
                 "id: 1,\n" +
                 "user: \"gavin\",\n" +
                 "desc: \"learn spring\",\n" +
-                "targetDate: \"2019-03-29\",\n" +
+                "targetDate: \""+now.toString()+"\",\n" +
                 "done: false\n" +
                 "},\n" +
                 "{\n" +
                 "id: 2,\n" +
                 "user: \"gavin\",\n" +
                 "desc: \"learn batch\",\n" +
-                "targetDate: \"2019-03-30\",\n" +
+                "targetDate: \""+now.toString()+"\",\n" +
                 "done: false\n" +
                 "}\n" +
                 "]";
@@ -69,7 +71,7 @@ public class TodoControllerUnitTest {
     }
     @Test
     public void retriveTodoByNameAndId() throws Exception{
-        Todo mockTodo = Todo.builder().id(1).user("gavin").desc("gavin spring").isDone(false).targetDate(LocalDate.of(2019,03,29)).build();
+        Todo mockTodo = Todo.builder().id(1).user("gavin").desc("gavin spring").isDone(false).targetDate(now).build();
 
         when(todoService.retrieveTodo(anyString(),anyInt()) ).thenReturn(mockTodo);
 
@@ -81,7 +83,7 @@ public class TodoControllerUnitTest {
                 "id: 1,\n" +
                 "user: \"gavin\",\n" +
                 "desc: \"gavin spring\",\n" +
-                "targetDate: \"2019-03-29\",\n" +
+                "targetDate: \""+now.toString()+"\",\n" +
                 "done: false\n" +
                 "}";
         JSONAssert.assertEquals(expected,result.getResponse().getContentAsString(),false);
@@ -91,12 +93,12 @@ public class TodoControllerUnitTest {
     @Test
     @Ignore
     public void createTodo() throws Exception {
-        Todo mockTodo = Todo.builder().user("Gavin").desc("study hive").isDone(false).targetDate(LocalDate.of(2019,04,02)).build();
+        Todo mockTodo = Todo.builder().user("Gavin").desc("study hive").isDone(false).targetDate(now).build();
         String todo = "{\n" +
                 "id: 4,\n" +
                 "user: \"Gavin\",\n" +
                 "desc: \"study hive\",\n" +
-                "targetDate: \"2019-04-02\",\n" +
+                "targetDate: \""+now.toString()+"\",\n" +
                 "done: false\n" +
                 "}";
         when(todoService.addTodo(anyString(),anyString(),isNull(),anyBoolean())).thenReturn(mockTodo);
@@ -105,6 +107,27 @@ public class TodoControllerUnitTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location",containsString("/users/gavin/todos/4")));
+    }
+
+    @Test
+    public void creatTodo_withValidationError() throws Exception{
+        Todo mockTodo = Todo.builder().user("Gavin").desc("study").isDone(false).targetDate(LocalDate.of(2019,04,02)).build();
+        String todo = "{\n" +
+                "id: 4,\n" +
+                "user: \"Gavin\",\n" +
+                "desc: \"study\",\n" +
+                "targetDate: \""+now.toString()+"\",\n" +
+                "done: false\n" +
+                "}";
+
+        when(todoService.addTodo(anyString(),anyString(),isNull(),anyBoolean()))
+                .thenReturn(mockTodo);
+
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post("/users/gavin/todos")
+                .content(todo)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().is4xxClientError()).andReturn();
     }
 
 

@@ -17,9 +17,9 @@ public class TodoService {
     private static LocalDate NOW = LocalDate.now();
     private static int todoCount = 3;
     static {
-        todos.add(Todo.builder().id(1).desc("Study spring batch").isDone(false).targetDate(NOW.plusDays(1)).user("Gavin").build());
-        todos.add(Todo.builder().id(2).desc("Study Aparch Spark").isDone(false).targetDate(NOW.plusDays(2)).user("Gavin").build());
-        todos.add(Todo.builder().id(3).desc("Study ElasticSearch").isDone(false).targetDate(NOW.plusDays(1)).user("Gavin").build());
+        todos.add(Todo.builder().id(1).desc("Study spring batch").isDone(false).targetDate(NOW).user("Gavin").build());
+        todos.add(Todo.builder().id(2).desc("Study Aparch Spark").isDone(false).targetDate(NOW).user("Gavin").build());
+        todos.add(Todo.builder().id(3).desc("Study ElasticSearch").isDone(false).targetDate(NOW).user("Gavin").build());
     }
 
 

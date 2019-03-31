@@ -1,13 +1,18 @@
 package com.honghap.sample.todo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import org.springframework.hateoas.Resource;
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 /**
  * Created by gavinkim at 2019-03-30
@@ -28,12 +33,16 @@ public class TodoController {
     }
 
     @GetMapping("/users/{name}/todos/{id}")
-    public Todo retrieveTodo(@PathVariable String name, @PathVariable int id) {
+    public Resource<Todo> retrieveTodo(@PathVariable String name, @PathVariable int id) {
         Todo todo = todoService.retrieveTodo(name,id);
         if(ObjectUtils.isEmpty(todo)) {
             throw new TodoNotFoundException("Todo Not Found");
         }
-        return todo;
+        Resource<Todo> todoResource = new Resource<>(todo);
+        ControllerLinkBuilder linkTodo = linkTo(methodOn(this.getClass()).retrieveTodos(name));
+        todoResource.add(linkTodo.withRel("parent"));
+
+        return todoResource;
     }
 
     @PostMapping("/users/{name}/todos")

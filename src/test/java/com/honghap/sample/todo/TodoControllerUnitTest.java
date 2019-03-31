@@ -1,8 +1,5 @@
-package com.honghap.sample.unit;
+package com.honghap.sample.todo;
 
-import com.honghap.sample.Todo;
-import com.honghap.sample.TodoController;
-import com.honghap.sample.TodoService;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest(TodoController.class)
-public class TodoControllerTest {
+public class TodoControllerUnitTest {
 
     @Autowired
     private MockMvc mvc;

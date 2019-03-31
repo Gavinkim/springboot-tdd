@@ -1,4 +1,4 @@
-package com.honghap.sample;
+package com.honghap.sample.sample;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

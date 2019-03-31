@@ -1,4 +1,4 @@
-package com.honghap.sample.integration;
+package com.honghap.sample.sample;
 
 import com.honghap.sample.Application;
 import org.hamcrest.Matchers;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SampleControllerTest {
+public class SampleControllerITTest {
 
     private static final String LOCAL_HOST = "http://localhost";
 

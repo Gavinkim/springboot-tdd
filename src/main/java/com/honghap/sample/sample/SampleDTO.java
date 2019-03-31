@@ -1,4 +1,4 @@
-package com.honghap.sample;
+package com.honghap.sample.sample;
 
 import lombok.Builder;
 import lombok.Getter;

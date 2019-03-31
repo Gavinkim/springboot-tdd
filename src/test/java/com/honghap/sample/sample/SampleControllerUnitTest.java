@@ -1,6 +1,6 @@
-package com.honghap.sample.unit;
+package com.honghap.sample.sample;
 
-import com.honghap.sample.SampleController;
+import com.honghap.sample.sample.SampleController;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest(SampleController.class)
-public class SampleControllerTest {
+public class SampleControllerUnitTest {
 
     @Autowired private MockMvc mvc;
 

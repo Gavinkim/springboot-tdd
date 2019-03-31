@@ -1,4 +1,4 @@
-package com.honghap.sample.integration;
+package com.honghap.sample.todo;
 
 import com.honghap.sample.Application;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TodoControllerTest {
+public class TodoControllerITTest {
 
     private static final String LOCAL_HOST = "http://localhost";
 
